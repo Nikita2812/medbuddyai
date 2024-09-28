@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.DermBuddyAI.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#e6f1f7</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_sw_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1500</item>
+        <item name="postSplashScreenTheme">@style/Theme.MedbuddyAI</item>
+    </style>
+</resources>

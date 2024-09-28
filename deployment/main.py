@@ -13,7 +13,7 @@ import verifyResults
 import re
 import numpy as np
 
-app = FastAPI(title='SwasthAI API', version='1.0.2', description='API for SwasthAI', redoc_url='/doc', docs_url='/')
+app = FastAPI(title='Medbuddy API', version='1.0.2', description='API for Medbuddy AI (Hack Systhesis)', redoc_url='/doc', docs_url='/')
 
 @app.post('/text_classify')
 async def text_classify(text: str):
