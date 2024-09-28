@@ -18,10 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Engineering
 import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.QuestionAnswer
 import androidx.compose.material.icons.outlined.SmartToy
@@ -51,7 +48,6 @@ import com.rohnsha.medbuddyai.navigation.bottombar.bottomNavItems
 import com.rohnsha.medbuddyai.screens.scan.DataListFull
 import com.rohnsha.medbuddyai.ui.theme.ViewDash
 import com.rohnsha.medbuddyai.ui.theme.customBlue
-import com.rohnsha.medbuddyai.ui.theme.customYellow
 import com.rohnsha.medbuddyai.ui.theme.fontFamily
 import com.rohnsha.medbuddyai.ui.theme.lightTextAccent
 
@@ -169,79 +165,8 @@ fun mAIScreen(
                     onClick = { navController.navigate(bottomNavItems.Chatbot.returnChatID(chatMode = 4, chatID = chatCount.value+1)) }
                 )
             )
-            item {
-                Text(
-                    text = "Task Specific Chat",
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight(600),
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier
-                        .padding(top = 26.dp, start = 24.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-            }
-
-            items(taskSpecificBots){
-                DataListFull(
-                    title = it.title,
-                    subtitle = it.subheader,
-                    imageVector = Icons.Outlined.QuestionAnswer,
-                    colorLogo = MaterialTheme.colorScheme.surface,
-                    additionalDataColor = lightTextAccent,
-                    colorLogoTint = MaterialTheme.colorScheme.onPrimary,
-                    onClickListener = {
-                        it.onClick()
-                        Log.d("logStatus", "clicked")
-                    }
-                )
-            }
 
             item {
-                Text(
-                    text = "Know Your Product",
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight(600),
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier
-                        .padding(top = 26.dp, start = 24.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                DataListFull(
-                    title = "Ask SwasthAI Admin",
-                    subtitle = "get more technical info",
-                    imageVector = Icons.Outlined.Info,
-                    colorLogo = MaterialTheme.colorScheme.surface,
-                    additionalDataColor = lightTextAccent,
-                    colorLogoTint = MaterialTheme.colorScheme.onPrimary,
-                    onClickListener = {
-                        snackBarToggleVM.SendToast(
-                            message = "Available from Fall 2024",
-                            indicator_color = customYellow,
-                            padding = PaddingValues(2.dp),
-                            icon = Icons.Outlined.Engineering
-                        )
-                        Log.d("logStatus", "clicked")
-                    }
-                )
-                DataListFull(
-                    title = "Download Fine-tuned LLM",
-                    subtitle = "powered by LLAMA3",
-                    imageVector = Icons.Outlined.Download,
-                    colorLogo = MaterialTheme.colorScheme.surface,
-                    additionalDataColor = lightTextAccent,
-                    colorLogoTint = MaterialTheme.colorScheme.onPrimary,
-                    onClickListener = {
-                        snackBarToggleVM.SendToast(
-                            message = "Available from Fall 2024",
-                            indicator_color = customYellow,
-                            padding = PaddingValues(2.dp),
-                            icon = Icons.Outlined.Engineering
-                        )
-                        Log.d("logStatus", "clicked")
-                    }
-                )
                 if (chatCount.value>0){
                     Text(
                         text = "Chat History",
@@ -256,7 +181,7 @@ fun mAIScreen(
                 }
             }
 
-            items(chatHistory.value.take(n = 3)){
+            items(chatHistory.value.take(n = 5)){
                 DataListFull(
                     title = when(it.mode){
                         0, 3, 4, 5 -> "QnA"
@@ -280,7 +205,7 @@ fun mAIScreen(
                         .padding(bottom = 21.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    if (chatHistory.value.size>3){
+                    if (chatHistory.value.size>5){
                         Text(
                             text = "View More",
                             fontFamily = fontFamily,

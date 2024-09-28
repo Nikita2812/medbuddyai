@@ -529,9 +529,9 @@ fun ChatBotScreen(
                         }
                         Text(
                             text = when(mode){
-                                0, 3, 4, 5, 2 -> "You are chatting with SwasthAI QnA Bot trained to answer general" +
+                                0, 3, 4, 5, 2 -> "You are chatting with MedbuddyAI QnA Bot trained to answer general" +
                                         " questions about medical"
-                                1 -> "You are chatting with SwasthAI Symptom checker bot trained to detect possible" +
+                                1 -> "You are chatting with MedbuddyAI Symptom checker bot trained to detect possible" +
                                         "symtoms associated with a disease"
                                 else -> { "Undetected categorization of chat mode" }
                             },
@@ -841,13 +841,13 @@ fun Messages(
                     ){
                         val formatter = SimpleDateFormat("MMMM dd, yyyy - HH:mm", Locale.getDefault())
                         Text(
-                            text = "${if (messageInfo.isBotMessage) "SwasthAI Chat - QnA" else "You"} | ${formatter.format(
+                            text = "${if (messageInfo.isBotMessage) "MedbuddyAI Chat - QnA" else "You"} | ${formatter.format(
                                 Date(messageInfo.timestamp)
                             )}",
                             fontSize = 10.sp,
                             fontFamily = fontFamily,
                             modifier = Modifier,
-                            color = customBlue,
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight(600)
                         )
                     }

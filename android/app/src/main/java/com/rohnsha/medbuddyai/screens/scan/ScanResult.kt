@@ -902,7 +902,7 @@ fun BOMContent(
             if (data.isChecked){
                 currentlySelected.value= data.title
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Row(
                 modifier = Modifier
                     .pointerInput(key1 = true) {
@@ -956,8 +956,9 @@ fun BOMContent(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(47.dp))
+            Spacer(modifier = Modifier.height(6.dp))
         }
+        item { Spacer(modifier = Modifier.height(47.dp)) }
     }
 }
 
