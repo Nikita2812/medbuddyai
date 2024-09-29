@@ -435,10 +435,11 @@ fun CameraPreview(
     controller: LifecycleCameraController,
     modifier: Modifier= Modifier,
     imgBitmap: Bitmap? = null,
+    isConfirmation: MutableState<Boolean> = isConfirming
 ) {
     val lifecycleOwner= LocalLifecycleOwner.current
     val coroutineScope= rememberCoroutineScope()
-    if (isConfirming.value){
+    if (isConfirmation.value){
         if (imgBitmap!=null){
             Image(
                 bitmap = imgBitmap.asImageBitmap(),
@@ -486,7 +487,7 @@ fun CameraPreview(
     }
 }
 
-private fun takePhoto(
+fun takePhoto(
     controller: LifecycleCameraController,
     onPhotoTaken: (Bitmap) -> Unit,
     toCcamFeed: (classification) -> Unit,

@@ -10,6 +10,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmb
 from langchain_anthropic import ChatAnthropic
 from pydantic import BaseModel
 import logging
+import re
 
 
 class ragChat:
@@ -21,14 +22,14 @@ class ragChat:
         self.SECRET_CODE= kwargs.get("secretCode")
         print(kwargs.get("serviceName", "swasthai"))
         os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
-        self.CHROMA_PATH = "chromaPathology-Copy1"
+        self.CHROMA_PATH = os.path.join(os.getcwd(), "chromaPathology-Copy1")
         self.bedrock= boto3.client('bedrock-runtime', aws_access_key_id= os.environ['ACCESS'], aws_secret_access_key=os.environ['SECRET'])
-        self.PROMPT_TEMPLATE= """
-Hello! I'm SwasthAI Chat, I am here to help answer your medical questions based on specific context. Here's how our interaction will work:
+        self.PROMPT_TEMPLATE = """
+Hello! I'm SwasthAI Chat, here to help answer your medical questions. Here's how our interaction will work:
 
 1. I'll first provide you with some relevant medical context.
 2. Then, you can ask your medical question.
-3. I'll answer based solely on the given context if it's a medical query.
+3. I'll answer based on the given context if it's sufficient and appropriate for a medical query. If the context is insufficient or inappropriate, I'll use my own knowledge to provide a helpful response.
 
 Let's begin:
 
@@ -37,11 +38,11 @@ Context:
 
 ---
 
-Now, what medical question would you like to ask about this topic? Please note that I can only address medical queries related to the context provided above.
+Now, what medical question would you like to ask? I can address queries related to the context above or general medical questions.
 
 Your question: {question}
 
-[INTERNAL INSTRUCTION: Analyze if the question is a medical query related to the given context. If it is, proceed with answering. If not, provide a polite refusal message.]
+[INTERNAL INSTRUCTION: Analyze if the question is a medical query. If it is, determine if the given context is sufficient and appropriate to answer the question. If the context is sufficient and appropriate, use it to formulate the response. If the context is insufficient or inappropriate, or if the question is not directly related to the given context, use your own knowledge to provide a helpful and accurate medical response. If the question is not medical in nature, provide a polite refusal message.]
 
 My response:
 """
@@ -106,4 +107,4 @@ My response:
         )
         chain = prompt | llm
         response = chain.invoke({"context": context_text, "question": query_text})
-        return response
+        return response.content if self.SERVICE_NAME=="google" else response

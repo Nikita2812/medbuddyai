@@ -103,3 +103,38 @@ Task: Determine if the image shows evidence of {self.diseaseName}.
 
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
         return json.loads(response.text)
+    
+    def decodeReportGoogle(self, prompt, filePath, mime_type=None):
+
+        genai.configure(api_key=self.secretCode)
+
+        def upload_to_gemini():
+            file = genai.upload_file(filePath, mime_type=mime_type)
+            print(f"Uploaded file '{file.display_name}' as: {file.uri}")
+            return file
+
+        generation_config = {
+            "temperature": 1,
+            "top_p": 0.95,
+            "top_k": 64,
+            "max_output_tokens": 1000,
+            "response_mime_type": "text/plain",
+        }
+
+        model = genai.GenerativeModel(
+        model_name="gemini-1.5-flash",
+        generation_config=generation_config
+        )
+
+        chat_session = model.start_chat(
+        history=[
+        ]
+        )
+
+        response = chat_session.send_message(
+            [upload_to_gemini(),
+            prompt]
+            )
+
+        print(response.text)
+        return response.text

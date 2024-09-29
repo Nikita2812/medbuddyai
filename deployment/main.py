@@ -28,6 +28,39 @@ async def chat(serviceName:str, secretCode: str, message: str):
     chatbot = ragChat.ragChat(kwargs={"serviceName": serviceName, "secretCode": secretCode})
     response= chatbot.get_response(message)
     return JSONResponse(content={"message": response}, status_code=200)
+
+@app.post("/decodeReport")
+async def decodeReport(
+    prompt: str = None,
+    serviceName: str = None,
+    secretCode: str = None,
+    file: UploadFile = File(...),
+):
+    try:
+        verifier= verifyResults.verifyScanResult(diseaseName=prompt, serviceName=serviceName, secretCode=secretCode)
+
+        file_location = f"temp_files/{file.filename}"
+        os.makedirs(os.path.dirname(file_location), exist_ok=True)
+        
+        with open(file_location, "wb") as f:
+            f.write(await file.read())
+
+        result= verifier.decodeReportGoogle(filePath=file_location, prompt=prompt)
+         
+        #match serviceName:
+         #   case "google":
+          #       result= verifier.decodeReportGoogle(filePath=file_location, prompt=prompt)
+           # case "openai":
+            #    result=  verifier.verifyResultsOpenAI(file_location)
+#            case _:
+ #               result=  JSONResponse(content= {"error": "Invalid service name"}, status_code=401)
+
+        print("results", result)
+        os.remove(file_location)
+        return JSONResponse(content={"message": result}, status_code=200)
+ 
+    except Exception as e:
+        return JSONResponse(content= {"error": str(e)}, status_code=401)
     
 @app.post("/verifyResults")
 async def verifyResultsa(
@@ -59,6 +92,13 @@ async def verifyResultsa(
  
     except Exception as e:
         return JSONResponse(content= {"error": str(e)}, status_code=401)
+    
+@app.post('/chat/unrag')
+async def chat_unrag(serviceName:str, secretCode: str, message: str):
+    chatbot = ragChat.ragChat(kwargs={"serviceName": serviceName, "secretCode": secretCode})
+    response= chatbot.chat(message)
+    return JSONResponse(content={"message": response}, status_code=200)
+
 
 @app.get('/getUsername/{name}')
 async def get_username(name: str):

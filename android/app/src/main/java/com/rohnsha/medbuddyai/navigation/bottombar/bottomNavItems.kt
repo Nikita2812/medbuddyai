@@ -68,6 +68,13 @@ sealed class bottomNavItems(
         selectedIcon = Icons.Filled.Forum
     )
 
+    object decodeReportScreen: bottomNavItems(
+        title = "decodeReport",
+        route = "decodeReport",
+        unselectedIcon = Icons.Outlined.Forum,
+        selectedIcon = Icons.Filled.Forum
+    )
+
     object CommunityReply: bottomNavItems(
         title = "CommunityReply",
         route = "communityReply/{$postID}",

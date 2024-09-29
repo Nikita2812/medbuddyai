@@ -38,6 +38,7 @@ import com.rohnsha.medbuddyai.database.userdata.communityTable.communityDBVM
 import com.rohnsha.medbuddyai.database.userdata.currentUser.currentUserDataVM
 import com.rohnsha.medbuddyai.database.userdata.keys.keyVM
 import com.rohnsha.medbuddyai.database.userdata.scan_history.scanHistoryViewModel
+import com.rohnsha.medbuddyai.domain.viewmodels.DeocdeReportVM
 import com.rohnsha.medbuddyai.domain.viewmodels.chatVM
 import com.rohnsha.medbuddyai.domain.viewmodels.classificationVM
 import com.rohnsha.medbuddyai.domain.viewmodels.communityVM
@@ -49,6 +50,7 @@ import com.rohnsha.medbuddyai.screens.BMIScreen
 import com.rohnsha.medbuddyai.screens.ChatBotScreen
 import com.rohnsha.medbuddyai.screens.CommunityReply
 import com.rohnsha.medbuddyai.screens.CommunityScreen
+import com.rohnsha.medbuddyai.screens.DecodeReportUI
 import com.rohnsha.medbuddyai.screens.DiseasesCatelogue
 import com.rohnsha.medbuddyai.screens.DocumentationScreen
 import com.rohnsha.medbuddyai.screens.ExploreScreen
@@ -92,6 +94,7 @@ fun bottomNavGraph(
     val communityDBVModel= viewModel<communityDBVM>()
     val _auth= FirebaseAuth.getInstance()
     val chatVM= viewModel<chatVM>()
+    val decodeReportVM= viewModel<DeocdeReportVM>()
 
     runBlocking {
         currentUserVM.countEntries()
@@ -193,6 +196,16 @@ fun bottomNavGraph(
                 navController = navController,
                 currentUserDataVM = currentUserVM,
                 snackBarToggleVM = snackBarVM
+            )
+        }
+        composable(
+            route = bottomNavItems.decodeReportScreen.route
+        ){
+            DecodeReportUI(
+                navController = navController,
+                currentUserDataVM = currentUserVM,
+                keyVM = keyVM,
+                viewModelPhotoSave = decodeReportVM
             )
         }
         composable(route = bottomNavItems.CommunityReply.route,
